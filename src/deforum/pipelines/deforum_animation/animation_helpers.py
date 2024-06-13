@@ -1364,11 +1364,18 @@ class FrameInterpolator:
     def get_inbetweens(self, key_frames, integer=False, interp_method='Linear', is_single_string=False):
         key_frame_series = pd.Series([np.nan for a in range(self.max_frames)])
         # get our ui variables set for numexpr.evaluate
-        bpm = self.settings.get("bpm", 120)
+        if isinstance(self.settings, dict):
+            bpm = self.settings.get("bpm", 120)
+            beat_offset = self.settings.get("beat_offset", 0)
+            unsorted_events = self.settings.get("schedule_events", [])
+        else:
+            bpm = 120
+            beat_offset = 0
+            unsorted_events = []
         fps = self.settings.fps
-        beat_offset = self.settings.get("beat_offset", 0)
+        
 
-        unsorted_events = self.settings.get("schedule_events", [])
+        
         events = sorted(unsorted_events, key=lambda event: event['time'])
 
         local_constants = {
