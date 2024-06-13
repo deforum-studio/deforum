@@ -188,7 +188,6 @@ wandb
 *.pth
 
 output/
-models/
 # settings files
 settings.txt
 
